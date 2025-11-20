@@ -1,0 +1,320 @@
+================================================================================
+DATA PREPROCESSING REPORT
+================================================================================
+Generated: 2025-11-20 16:21:46
+
+================================================================================
+1. DATA DIMENSIONS
+================================================================================
+Training Data:
+  Original:  3,000 rows × 23 columns
+  Processed: 3,000 rows × 81 columns
+  Added:     58 new columns
+
+Test Data:
+  Original:  4,398 rows × 22 columns
+  Processed: 4,398 rows × 79 columns
+  Added:     57 new columns
+
+================================================================================
+2. ORIGINAL COLUMNS
+================================================================================
+   1. id
+   2. belongs_to_collection
+   3. budget
+   4. genres
+   5. homepage
+   6. imdb_id
+   7. original_language
+   8. original_title
+   9. overview
+  10. popularity
+  11. poster_path
+  12. production_companies
+  13. production_countries
+  14. release_date
+  15. runtime
+  16. spoken_languages
+  17. status
+  18. tagline
+  19. title
+  20. Keywords
+  21. cast
+  22. crew
+  23. revenue
+
+================================================================================
+3. NEW COLUMNS CREATED
+================================================================================
+
+3.1 Collection Features:
+  • has_collection
+  • collection_name
+
+3.2 Genre Features:
+  • num_genres
+  • genre_names
+  • genre_drama
+  • genre_comedy
+  • genre_thriller
+  • genre_action
+  • genre_romance
+  • genre_crime
+  • genre_adventure
+  • genre_horror
+  • genre_science_fiction
+  • genre_family
+  • budget_per_genre
+
+3.3 Cast & Crew Features:
+  • num_cast
+  • has_cast_info
+  • actor_1
+  • actor_2
+  • actor_3
+  • num_crew
+  • director
+  • cast_crew_ratio
+
+3.4 Production Features:
+  • num_production_companies
+  • has_production_info
+  • num_production_countries
+  • primary_country
+  • num_spoken_languages
+  • original_language_encoded
+  • primary_country_encoded
+
+3.5 Keyword Features:
+  • num_keywords
+  • has_keywords
+
+3.6 Date & Time Features:
+  • release_year
+  • release_month
+  • release_day
+  • release_dayofweek
+  • release_quarter
+  • release_season
+  • is_holiday_season
+  • is_weekend_release
+  • is_released
+
+3.7 Budget Features:
+  • has_budget
+  • budget_log
+  • budget_category
+  • budget_category_encoded
+  • budget_popularity_interaction
+  • budget_per_genre
+
+3.8 Revenue Features (Target Variable):
+  • revenue_log
+
+3.9 Text-Derived Features:
+  • overview_length
+  • overview_word_count
+  • has_overview
+  • tagline_length
+  • has_tagline
+  • title_length
+  • title_word_count
+  • has_homepage
+
+3.10 Other Numeric Transformations:
+  • runtime_log
+  • popularity_log
+  • budget_popularity_interaction
+
+3.11 Binary Indicators:
+  • has_collection
+  • has_cast_info
+  • has_production_info
+  • has_keywords
+  • is_holiday_season
+  • is_weekend_release
+  • has_budget
+  • has_overview
+  • has_tagline
+  • has_homepage
+  • is_released
+  • has_poster
+
+3.12 Encoded Categorical Features:
+  • original_language_encoded
+  • primary_country_encoded
+  • budget_category_encoded
+
+3.13 Interaction Features:
+  • budget_popularity_interaction
+  • budget_per_genre
+  • cast_crew_ratio
+
+================================================================================
+4. MISSING VALUES COMPARISON
+================================================================================
+Training Data:
+  Original:  5,601 missing values
+  Processed: 4,994 missing values
+
+Test Data:
+  Original:  8,233 missing values
+  Processed: 7,363 missing values
+
+================================================================================
+5. SAMPLE TRANSFORMATIONS (First Row)
+================================================================================
+
+5.1 Budget Transformation:
+  Original budget:     $14,000,000
+  Log-transformed:     16.4546
+  Has budget:          1
+
+5.2 Date Transformation:
+  Original date:       2/20/15
+  Release year:        2015
+  Release month:       2
+  Release season:      1
+  Holiday season:      False
+
+5.3 Genre Transformation:
+  Original genres:     [{'id': 35, 'name': 'Comedy'}]...
+  Number of genres:    1
+  Active genres:       comedy
+
+5.4 Text Transformation:
+  Original overview:   When Lou, who has become the "father of the Internet," is shot by an unknown ass...
+  Overview length:     155 characters
+  Overview words:      29 words
+
+5.5 Target Variable (Revenue) Transformation:
+  Original revenue:    $12,314,651
+  Log-transformed:     16.3263
+
+================================================================================
+6. FEATURE STATISTICS (Training Data)
+================================================================================
+
+Target Variable (revenue_log):
+  Count:  3000
+  Mean:   15.9620
+  Std:    3.0613
+  Min:    0.6931
+  25%:    14.6825
+  50%:    16.6373
+  75%:    18.0484
+  Max:    21.1417
+
+Key Numeric Features:
+
+  budget_log:
+    Mean: 11.88, Std: 7.44, Min: 0.00, Max: 19.76
+
+  popularity_log:
+    Mean: 1.98, Std: 0.74, Min: 0.00, Max: 5.69
+
+  runtime:
+    Mean: 108.27, Std: 21.00, Min: 11.00, Max: 338.00
+
+  num_genres:
+    Mean: 2.50, Std: 1.12, Min: 0.00, Max: 7.00
+
+  num_cast:
+    Mean: 2.07, Std: 5.38, Min: 0.00, Max: 58.00
+
+================================================================================
+7. PREPROCESSING STEPS APPLIED
+================================================================================
+
+1. JSON Parsing:
+   - Parsed complex JSON strings in columns: genres, cast, crew, production_companies,
+     production_countries, spoken_languages, Keywords, belongs_to_collection
+   - Extracted structured information from nested data
+
+2. Feature Engineering:
+   - Collection: Created binary indicator and extracted collection names
+   - Genres: Extracted genre counts and created binary features for top 10 genres
+   - Cast/Crew: Extracted top 3 actors, director name, and counts
+   - Production: Extracted company counts, countries, primary country, languages
+   - Keywords: Extracted keyword counts and presence indicators
+
+3. Date Feature Extraction:
+   - Extracted: year, month, day, day of week, quarter, season
+   - Created indicators: holiday season, weekend release
+   - Enables temporal pattern learning
+
+4. Numerical Transformations:
+   - Log transforms: Applied to budget, revenue, popularity, runtime
+   - Handles skewed distributions and large value ranges
+   - Improves model training stability
+
+5. Text Feature Extraction:
+   - Calculated lengths and word counts for: overview, tagline, title
+   - Created presence indicators for text fields
+   - Enables text signal without NLP complexity
+
+6. Missing Value Handling:
+   - Imputed missing runtime with median values
+   - Created "has_*" indicators for optional fields
+   - Filled text fields with empty strings
+   - Preserved information about missingness
+
+7. Categorical Encoding:
+   - Label encoded: original_language, primary_country, budget_category
+   - Maintains categorical information in numeric format
+   - Enables model to learn from categorical patterns
+
+8. Binary Indicators:
+   - Created flags for: has_budget, has_homepage, has_collection, has_cast_info,
+     has_production_info, has_keywords, has_overview, has_tagline, has_poster
+   - Captures presence/absence patterns
+
+9. Interaction Features:
+   - budget × popularity: Captures combined marketing/quality signal
+   - budget per genre: Indicates resource allocation
+   - cast/crew ratio: Production scale indicator
+
+10. Data Quality:
+    - Handled outliers in runtime (0 and extreme values)
+    - Addressed zero budgets (75% of data)
+    - Maintained data integrity throughout transformations
+
+
+================================================================================
+8. RECOMMENDATIONS FOR MODEL BUILDING
+================================================================================
+
+1. Feature Selection:
+   - Use preprocessor.get_feature_columns() to get recommended features
+   - Consider feature importance analysis after initial modeling
+   - May want to drop highly correlated features
+
+2. Scaling:
+   - Numeric features have different scales (already log-transformed where appropriate)
+   - Consider StandardScaler for linear models
+   - Tree-based models (Random Forest, XGBoost) typically don't need scaling
+
+3. Target Variable:
+   - Use 'revenue_log' as target for better distribution
+   - Remember to exponentiate predictions (np.expm1) for original scale
+   - Consider using RMSLE as evaluation metric
+
+4. Validation:
+   - Use time-based split or stratified split based on release_year
+   - Watch for data leakage from future information
+
+5. Model Suggestions:
+   - Start with Random Forest or XGBoost (handles mixed feature types well)
+   - Try ensemble methods combining multiple models
+   - Consider stacking with linear models as meta-learner
+
+6. Feature Engineering Ideas:
+   - Add more temporal features (days since first movie, trends)
+   - Create actor/director reputation scores based on past revenues
+   - Add franchise/sequel indicators
+   - Incorporate external data (economic indicators, competition)
+
+
+================================================================================
+END OF REPORT
+================================================================================
