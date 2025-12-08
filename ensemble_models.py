@@ -94,6 +94,7 @@ def train_or_load_models(X_train, X_val, X_test, y_train):
             
             # Need to scale data for MLP (same as in training)
             mlp_scaler = StandardScaler()
+            X_train_mlp_scaled = mlp_scaler.fit_transform(X_train)
             X_val_mlp_scaled = mlp_scaler.transform(X_val)
             X_test_mlp_scaled = mlp_scaler.transform(X_test)
             
